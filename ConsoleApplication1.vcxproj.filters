@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\std">
+      <UniqueIdentifier>{54214813-96e2-40f0-8d09-b29759809971}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\biz">
+      <UniqueIdentifier>{a59e0258-1c0b-49aa-8667-3cf315a84680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ssl">
+      <UniqueIdentifier>{fafa1034-c5f1-4f95-b5e1-2e4dfc35486d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleApplication1.cpp">
@@ -20,35 +29,41 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="test.hpp">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="evpp.hpp">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="sort.hpp">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="classtest.hpp">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ptr.hpp">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lock.hpp">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="string.hpp">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="tree.hpp">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="math.hpp">
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="stl.hpp">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="classtest.hpp">
+      <Filter>源文件\std</Filter>
+    </ClInclude>
+    <ClInclude Include="lock.hpp">
+      <Filter>源文件\std</Filter>
+    </ClInclude>
+    <ClInclude Include="math.hpp">
+      <Filter>源文件\std</Filter>
+    </ClInclude>
+    <ClInclude Include="ptr.hpp">
+      <Filter>源文件\std</Filter>
+    </ClInclude>
+    <ClInclude Include="sort.hpp">
+      <Filter>源文件\std</Filter>
+    </ClInclude>
+    <ClInclude Include="stdtest.hpp">
+      <Filter>源文件\std</Filter>
+    </ClInclude>
+    <ClInclude Include="string.hpp">
+      <Filter>源文件\std</Filter>
+    </ClInclude>
+    <ClInclude Include="test.hpp">
+      <Filter>源文件\std</Filter>
+    </ClInclude>
+    <ClInclude Include="tree.hpp">
+      <Filter>源文件\std</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl_client.hpp">
+      <Filter>源文件\ssl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -13,6 +13,7 @@
 #include "string.hpp"
 #include <assert.h>
 #include "stl.hpp"
+#include "stdtest.hpp"
 
 int main() {
 
@@ -22,29 +23,35 @@ int main() {
     //testNew();
 
     //testStruct();
-    std::unique_ptr<int> ua = std::make_unique<int>();
+    //std::unique_ptr<int> ua = std::make_unique<int>();
 
-    std::shared_ptr<int> pa = std::make_shared<int>();
-    testSharePtr(pa);
+    //std::shared_ptr<int> pa = std::make_shared<int>();
+    //testSharePtr(pa);
 
     int a = 10;
-
+	if (a) {
+		int  b = 10; int c = b;
+	}
+	else 
+		int b = 10;
+	
     /*if (a == 10) {
         printf(" abort");
         assert(false);
     }*/
 
-    int arr[] = {3, 5, 7, 9, 2, 8, 1};
+    //int arr[] = {3, 5, 7, 9, 2, 8, 1};
     //int len = sizeof(arr) / sizeof(arr[0]);
     //BubbleSort(arr, len);
-    testMath();
+    //testMath();
 
     //std::string testStr = genNewString("n2e3m");
-    testStl();
-    std::vector<int> v = {1, 2, 3, 4, 5};
-    reverseArray(v);
+    //testStl();
+    //std::vector<int> v = {1, 2, 3, 4, 5};
+    //reverseArray(v);
 
     //
+	//testRandom();
 
 
 
