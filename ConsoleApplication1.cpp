@@ -14,6 +14,7 @@
 #include <assert.h>
 #include "stl.hpp"
 #include "stdtest.hpp"
+#include "ssl_client.hpp"
 
 int main() {
 
@@ -52,8 +53,8 @@ int main() {
 
     //
 	//testRandom();
-
-
+	WinSockEnv  env;
+	test_ssl_client();
 
     getchar();
     return 0;

@@ -10,21 +10,40 @@
 #include <openssl/err.h>
 
 // socket
-#ifdef  _WIN32
+//#ifdef  WIN32
+#define WIN32_LEAN_AND_MEAN	
 #include <windows.h> 
-#include <WinSock2.h>
+#include <corecrt_io.h>
+//#include <WinSock2.h>
 
-#else
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <resolv.h>
+#pragma comment(lib, "ws2_32.lib")
 
-#endif
+//#elif _UNIX
+//#include <netinet/in.h>
+//#include <arpa/inet.h>
+//#include <unistd.h>
+//#include <sys/socket.h>
+//#include <resolv.h>
+//#endif
 
 #include <iostream>
 #include <thread>
+
+class   WinSockEnv{
+public:
+	WinSockEnv() {
+		WSADATA data;
+		WORD version = MAKEWORD(2, 2);
+
+		WSAStartup(version, &data);
+	}
+
+	~WinSockEnv()
+	{
+		WSACleanup();
+	}
+
+};
 
 void showCerts(SSL *ssl) {
 	X509 *cert;
@@ -94,13 +113,13 @@ int create_socket(std::string serverIp, uint16_t serverPort) {
 	sockFd = socket(PF_INET, SOCK_STREAM, 0);
 	if (sockFd < 0) {
 		printf("create socket error:%d", errno);
-		exit(EXIT_FAILURE);
+		return  -1;
 	}
 
 	int ret = connect(sockFd, (struct sockaddr *) &addr, sizeof(sockaddr_in));
 	if (ret != 0) {
 		std::cout << "Connect err:" << errno << std::endl;
-		exit(errno);
+		return -1;
 	}
 
 	return sockFd;
@@ -142,7 +161,7 @@ void opensslErrorCheck(SSL *ssl, int retCode, bool &isError) {
 	}
 }
 
-int tet_ssl_client() {
+int test_ssl_client() {
 	SSL_CTX *ctx = nullptr;
 
 	// 初始化openssl
@@ -150,9 +169,15 @@ int tet_ssl_client() {
 	std::cout << "init openssl success" << std::endl;
 
 	// 初始化socket，同步连接远端服务器
-	//int socketFd = create_socket("10.0.72.202", 8433);
-	int socketFd = create_socket("10.80.0.17", 8000);
+	int socketFd = create_socket("10.0.72.202", 8000);
+	if (socketFd < 0)
+	{
+		return  -1;
+	}
+	//int socketFd = create_socket("10.80.0.17", 8000);
 	std::cout << "tcp connect remote success" << std::endl;
+	system("pause");
+	return  -1 ;
 
 	// 创建SSL_CTX上下文
 	ctx = create_context();
@@ -161,22 +186,50 @@ int tet_ssl_client() {
 	SSL *ssl = SSL_new(ctx);
 	SSL_set_fd(ssl, socketFd);
 
-	std::this_thread::sleep_for(std::chrono::seconds(6));
+	//SSL_write("ssl",(const void *)"hello",5);
+	//std::this_thread::sleep_for(std::chrono::seconds());
+	bool  bError = false;
+
+	
+	BYTE  buf[1000];
+	int ret= SSL_read(ssl,buf,1024);
+	 if (ret <= 0)
+	 {
+		 opensslErrorCheck(ssl,ret,bError);
+	 }
+
+	ret = SSL_write(ssl, "world", 5);
+	if (ret <= 0)
+	{
+		opensslErrorCheck(ssl, ret, bError);
+	}
+
+	 ret = SSL_write(ssl, "nihao", 5);
+
+	if (ret <= 0)
+	{
+		opensslErrorCheck(ssl, ret, bError);
+	}
+
+
+
+	//std::this_thread::sleep_for(std::chrono::seconds(3));
 
 	// 建立SSL链接，握手
 	std::cout << "SSL_connect 2s later will connect and do hand shake..." << std::endl;
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 	std::cout << "SSL_connect " << std::endl;
-	int ret = SSL_connect(ssl);
+	 ret = SSL_connect(ssl);
 	if (ret <= 0) {
-		ERR_print_errors_fp(stderr);
+		//ERR_print_errors_fp(stderr);
+		opensslErrorCheck(ssl, ret, bError);
 		return 0;
 	}
 	std::cout << "handshake success" << std::endl;
 
 	// 显示对方证书信息
-	std::cout << "Connected with " << SSL_get_cipher(ssl) << " encryption" << std::endl;
-	showCerts(ssl);
+	//std::cout << "Connected with " << SSL_get_cipher(ssl) << " encryption" << std::endl;
+	//showCerts(ssl);
 
 	std::cout << "send hello server" << std::endl;
 
@@ -202,7 +255,7 @@ int tet_ssl_client() {
 
 	SSL_shutdown(ssl); // 关闭SSL连接
 	SSL_free(ssl);     // 释放SSL资源
-	close(socketFd);   // 关闭socket文件句柄
+	closesocket(socketFd);   // 关闭socket文件句柄
 	SSL_CTX_free(ctx); // 释放SSL_CTX上下文资源
 
 	return 0;
